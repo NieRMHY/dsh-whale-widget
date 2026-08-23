@@ -1,7 +1,7 @@
 {
   "name": "dsh-whale-widget",
-  "version": "0.2.8",
-  "description": "DSH Web 界面右下角的 DeepSeek 余额小鲸鱼挂件（含今日已用、峰谷定价、随机台词、音效与每轮消耗统计）",
+  "version": "0.2.8-mhy.2",
+  "description": "DSH Web 界面右下角的小鲸鱼挂件（MHY fork：数据源为 New API 账号级 token 用量统计，含今日/累计 token、订阅剩余额度、随机台词、音效与每轮 token 统计）",
   "keywords": [
     "dsh",
     "dsh-plugin",

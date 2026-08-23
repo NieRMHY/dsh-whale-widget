@@ -2,6 +2,49 @@
 
 ![DSH 小鲸鱼余额挂件](assets/DSH2.png)
 
+> ## ⚠️ 本地 fork 说明（MHY，`0.2.8-mhy.2`）
+>
+> 本副本把数据源从 DeepSeek 官方余额换成了**自建 / 中转 New API 实例的账号级 token 用量**，
+> **下文关于 DeepSeek 官方余额的说明对本 fork 不适用**：
+>
+> | 项 | 上游行为 | 本 fork 行为 |
+> |----|----------|--------------|
+> | 主数字 | `DEEPSEEK_API_KEY` 调 `api.deepseek.com/user/balance` 取余额 | New API `/api/log/self`（type=2 消费日志）聚合出的**今日 token** |
+> | 提示行 | 今日已用金额 | **累计总 token** + 订阅剩余额度 |
+> | 单位 | `¥` | `tok`（万 / 亿 自动换算） |
+> | 缓存 | 25s 内存 TTL | `~/.dsh/.dshw-newapi.json`，按天分桶，5 分钟增量刷新 |
+> | 限速 | 无 | 起跑间隔节流 6 次/s + 并发 4 |
+> | 首次启动 | 立即显示 | 全量统计约 1 分钟，期间显示 WARMUP 提示 |
+> | 每轮消耗气泡 | 本轮金额（按官方价换算） | 本轮 **token 数**（中转侧计费规则未必与官方价一致，不做金额换算） |
+>
+> 不再需要 `DEEPSEEK_API_KEY` / `DEEPSEEK_PLATFORM_TOKEN`。
+>
+> ### 配置
+>
+> 部署私有信息不写进源码，放在 `~/.dsh/.dshw-config.json`（**不要提交**）：
+>
+> ```json
+> {
+>   "base": "https://<your-newapi-host>",
+>   "tokenKey": "NEWAPI_ACCESS_TOKEN",
+>   "quotaCnyRate": 0
+> }
+> ```
+>
+> - `base`：New API 实例地址，为空时挂件降级为「未配置」提示
+> - `tokenKey`：DSH 凭据名，对应 New API 网页「个人设置 → 生成访问令牌」拿到的 token
+> - `quotaCnyRate`：每 1 quota 折算的本币金额，用于把订阅剩余额度显示成钱；填 `0` 则按原始 quota 显示
+>
+> ### 统计实现要点
+>
+> - `/api/log/self` 的 `id` 字段是**结果集内的排名**（第一页 1..100、第二页 101..200），不是稳定主键；
+>   带 `start_timestamp` 的增量查询会重新从 1 编号，用它去重会让增量永久失效。本 fork 用 `request_id` 去重。
+> - 分页参数 `p` 是 1-based，`p=0` 与 `p=1` 返回同一页。
+> - 聚合按本地日期分桶且只追加不重算，因此服务端清理旧日志后累计值不会缩水。
+> - `page_size` 被服务端硬顶在 100，加大页码无法提速，只能提高请求速率。
+>
+> 改动集中在 `lib/index.js`，均带 `Add by MHY` / `Modify by MHY` 标注；合并上游时保留这些段落。
+
 DeepSeek Harness（DSH）Web 界面右下角的常驻余额挂件：小鲸鱼气泡图 + DeepSeek API 余额 + 今日已用 + 每轮对话消耗统计，每次打开界面自动启用。本项目是标准 DSH 插件包，可通过 `dsh plugin` 安装/卸载。
 
 ## 特性
