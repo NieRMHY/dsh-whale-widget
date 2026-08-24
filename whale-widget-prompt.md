@@ -5,6 +5,16 @@
 > 文中 `C:\Users\Meteor\.dsh\profiles\web\`、`D:\TestBox\deepseek\` 等为本机示例路径，迁移时请替换为你环境中的实际路径。
 > 当前版本：v0.2.5（含今日已用双模式、峰谷定价、随机台词、音效、汉堡菜单与每轮对话消耗统计）。
 
+> [!warning] 本文件为上游原始规格，部分内容对本 fork 已不适用
+> 本 fork 把数据源换成了 New API 的 token 用量统计，以下段落**仅作历史参考**：
+> - DeepSeek 余额接口、`DEEPSEEK_API_KEY` / `DEEPSEEK_PLATFORM_TOKEN`、今日已用双模式（记账 / 实时令牌）
+> - 峰谷定价表与金额换算（每轮气泡改为显示 token 数）
+> - 音效相关：`/dsh-whale/sound/*.mp3` 路由、菜单的音效与音量行、`Ya1/Ya2/D1/D2.mp3` 资源（功能与文件均已移除）
+> - 菜单的「用量模式」下拉（已移除）
+>
+> 仍然有效的部分：视觉几何参数、气泡 SVG、拖拽吸附、镜像翻转、按压形变、随机台词组、缩放与锚点记忆。
+> 字号已在本 fork 中整体缩小约 22%（label 52u / amount 96u / period 80u / hint 44u），文中数值为上游原值。
+
 ---
 
 ## 一、需求总览

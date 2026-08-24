@@ -118,7 +118,7 @@ curl -sI localhost:3080/dsh-whale/image.png
 └── whale-widget-prompt.md # 上游的完整规格 / 视觉参数说明
 ```
 
-调整文字位置、颜色、动画、吸附逻辑或台词组时参考 `whale-widget-prompt.md`（该文件为上游内容，其中的定价表部分对本 fork 已不适用）。
+调整文字位置、颜色、动画、吸附逻辑或台词组时参考 `whale-widget-prompt.md`。注意该文件是上游原始规格，其中的余额接口、定价表、音效与用量模式段落对本 fork 已不适用，文件开头有失效范围标注。
 
 ## 常见问题
 
