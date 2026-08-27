@@ -1,6 +1,6 @@
 {
   "name": "dsh-whale-widget",
-  "version": "0.2.8-mhy.2",
+  "version": "0.2.8-mhy.3",
   "description": "DSH Web 界面右下角的小鲸鱼挂件（MHY fork：数据源为 New API 账号级 token 用量统计，含今日/累计 token、订阅剩余额度、随机台词与每轮 token 提示）",
   "keywords": [
     "dsh",
